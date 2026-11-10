@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Festival Coros a La Sabana – En vivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#00205B; --blue:#00387b;
+  --bg:#ffffff; --ink:#00205B; --soft:rgba(0,32,91,.72); --line:rgba(0,32,91,.14);
+  --hero:#00205B; --now-bg:rgba(0,56,123,.09);
+  --serif:'Fraunces',Georgia,'Times New Roman',serif;
+  --sans:'Instrument Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#00205B; --ink:#ffffff; --soft:rgba(255,255,255,.76); --line:rgba(255,255,255,.18);
+    --hero:#00387b; --now-bg:rgba(255,255,255,.10);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#00205B; --ink:#ffffff; --soft:rgba(255,255,255,.76); --line:rgba(255,255,255,.18);
+  --hero:#00387b; --now-bg:rgba(255,255,255,.10);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px 56px}
+
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:24px 0 16px}
+.fest{font-family:var(--serif);font-weight:600;font-size:1.2rem;line-height:1.2;margin:0}
+.uni{margin:2px 0 0;color:var(--soft);font-size:.85rem}
+.clock{text-align:right;flex:none}
+.clock time{display:block;font-variant-numeric:tabular-nums;font-weight:600;font-size:1.05rem;white-space:nowrap}
+.clock span{font-size:.75rem;color:var(--soft)}
+
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line);margin-bottom:20px}
+.tabs button{appearance:none;background:none;border:0;padding:12px 0;font:inherit;font-weight:500;color:var(--soft);
+  border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink);font-weight:600}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+/* Hero */
+.hero{background:var(--hero);color:#fff;border-radius:20px;padding:26px 24px 24px}
+.live{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;color:rgba(255,255,255,.88)}
+.dot{width:8px;height:8px;border-radius:50%;background:#fff}
+.live.on .dot{animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.live.on .dot{animation:none}.bar i{transition:none}}
+.kicker{margin:22px 0 6px;color:rgba(255,255,255,.82);font-size:.95rem}
+.title{font-family:var(--serif);font-weight:600;font-size:clamp(2rem,8vw,3rem);line-height:1.08;margin:0;
+  letter-spacing:-.015em;overflow-wrap:anywhere;text-wrap:balance;font-variant-numeric:tabular-nums}
+.sub{margin:12px 0 0;color:rgba(255,255,255,.84)}
+.bar{height:4px;border-radius:2px;background:rgba(255,255,255,.24);margin-top:26px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:#fff;transition:width 1s linear}
+.barinfo{display:flex;justify-content:space-between;gap:12px;margin-top:8px;font-size:.85rem;
+  color:rgba(255,255,255,.88);font-variant-numeric:tabular-nums}
+
+/* Sigue */
+.next{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 4px;border-bottom:1px solid var(--line)}
+.next .l{display:block;color:var(--soft);font-size:.85rem}
+.next .n{font-family:var(--serif);font-weight:600;font-size:1.25rem;line-height:1.2}
+.next .a{font-variant-numeric:tabular-nums;color:var(--soft);white-space:nowrap;font-size:.95rem}
+
+/* Programa */
+.h2{font-family:var(--serif);font-weight:600;font-size:1.2rem;margin:28px 0 2px}
+.h2note{margin:0 0 6px;color:var(--soft);font-size:.85rem}
+.prog{list-style:none;margin:0;padding:0}
+.row{display:grid;grid-template-columns:7rem 1fr;gap:12px;padding:14px 12px;border-bottom:1px solid var(--line);border-left:3px solid transparent}
+.row .tm{font-variant-numeric:tabular-nums;font-weight:600;font-size:.95rem;padding-top:2px;white-space:nowrap}
+.row .tm small{display:block;font-weight:400;font-size:.75rem;color:var(--soft)}
+.row h3{margin:0;font-family:var(--serif);font-weight:600;font-size:1.1rem;line-height:1.25}
+.row p{margin:2px 0 0;font-size:.85rem;color:var(--soft)}
+.row .tag{display:block;margin-top:6px;font-size:.85rem;font-weight:600}
+.row.past{opacity:.5}
+.row.now{background:var(--now-bg);border-left-color:var(--ink);border-radius:0 12px 12px 0}
+
+/* Transmisión */
+.stream{max-width:420px;margin:24px auto 0;text-align:center}
+.stream svg{width:56px;height:56px;color:var(--ink)}
+.stream h2{font-family:var(--serif);font-weight:600;font-size:1.6rem;line-height:1.2;margin:14px 0 8px}
+.stream p{color:var(--soft);margin:0 0 20px}
+.linkbox input{width:100%;padding:14px 16px;font:inherit;font-size:.95rem;border:1px solid var(--line);border-radius:12px;
+  background:transparent;color:var(--ink);text-align:center;text-overflow:ellipsis}
+.stream .btn{display:block;text-decoration:none;text-align:center}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.msg{color:var(--ink);font-weight:600;margin:12px 0 0!important;min-height:1.5em;font-size:.95rem}
+.foot{margin-top:32px;text-align:center;color:var(--soft);font-size:.8rem}
+
+/* Anfitrión */
+.lock{max-width:360px;margin:28px auto;text-align:center}
+.lock h2{font-family:var(--serif);font-weight:600;font-size:1.5rem;margin:0 0 8px}
+.lock p{color:var(--soft);margin:0 0 18px}
+.lock input{width:100%;padding:14px 16px;font:inherit;font-size:1.05rem;border:1px solid var(--line);border-radius:12px;
+  background:transparent;color:var(--ink);text-align:center}
+.btn{appearance:none;border:0;background:var(--ink);color:var(--bg);font:inherit;font-weight:600;padding:13px 22px;
+  border-radius:12px;cursor:pointer;margin-top:12px;width:100%}
+.err{color:var(--ink);font-weight:600;margin-top:12px!important;min-height:1.5em}
+.hstatus{display:flex;justify-content:space-between;gap:12px;color:var(--soft);font-size:.9rem;margin-bottom:12px;font-variant-numeric:tabular-nums}
+.focus{background:var(--hero);color:#fff;border-radius:20px;padding:24px}
+.focus .fk{margin:0 0 4px;color:rgba(255,255,255,.82);font-size:.9rem}
+.focus h2{font-family:var(--serif);font-weight:600;font-size:1.6rem;line-height:1.15;margin:0}
+.focus .ft{margin:4px 0 0;color:rgba(255,255,255,.82);font-size:.9rem;font-variant-numeric:tabular-nums}
+.script{margin-top:18px;font-size:var(--hs,1.25rem);line-height:1.6}
+.script p{margin:0 0 .9em}
+.script p:last-child{margin-bottom:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0}
+.chip{font-size:.8rem;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:2px 10px;color:rgba(255,255,255,.92)}
+.hb .chip{border-color:var(--line);color:var(--soft)}
+.beat{margin-bottom:1em}
+.beat:last-child{margin-bottom:0}
+.bl{display:block;font-size:.78rem;margin-bottom:2px;color:rgba(255,255,255,.72);font-family:var(--sans)}
+.hb .bl{color:var(--soft)}
+.script .beat p,.hb .beat p{margin:0}
+.note{margin-top:1em;border:1px dashed rgba(255,255,255,.55);border-radius:12px;padding:10px 14px;font-size:.9rem;font-family:var(--sans)}
+.hb .note{border-color:var(--line);color:var(--soft)}
+.rep{margin:0;padding-left:1.3em}
+.rep li{margin:0 0 .35em}
+.tools{display:flex;gap:8px;justify-content:flex-end;align-items:center;margin:14px 0 4px}
+.tools .lbl{margin-right:auto;font-weight:600;font-family:var(--serif);font-size:1.2rem}
+.tools button{appearance:none;background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:10px;
+  padding:7px 12px;font:inherit;font-size:.9rem;font-weight:500;cursor:pointer}
+.hs{border-bottom:1px solid var(--line)}
+.hs.cur{background:var(--now-bg)}
+.hs summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:7rem 1fr;gap:12px;padding:14px 8px}
+.hs summary::-webkit-details-marker{display:none}
+.hs .ht{font-variant-numeric:tabular-nums;font-weight:600;font-size:.95rem;white-space:nowrap}
+.hs .hn{font-family:var(--serif);font-weight:600;font-size:1.05rem;line-height:1.25}
+.hs .hm{display:block;font-family:var(--sans);font-weight:400;font-size:.85rem;color:var(--soft)}
+.hs .hb{padding:0 8px 18px calc(7rem + 20px);color:var(--ink)}
+.hs .hb p{margin:0 0 .8em}
+.sim{display:inline-block;margin-top:2px;font-size:.7rem;font-weight:600;border:1px solid var(--line);border-radius:6px;padding:0 6px}
+@media (max-width:420px){
+  .row,.hs summary{grid-template-columns:6.4rem 1fr;gap:8px}
+  .row .tm,.hs .ht{font-size:.88rem}
+  .hs .hb{padding-left:8px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <p class="fest" id="evName"></p>
+      <p class="uni" id="evOrg"></p>
+    </div>
+    <div class="clock">
+      <time id="clock" aria-label="Hora actual en Colombia">--:--:--</time>
+      <span>Hora Colombia</span>
+      <span class="sim" id="sim" hidden>Simulación</span>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Secciones">
+    <button role="tab" id="tabP" aria-selected="true" aria-controls="panelP">Programa</button>
+    <button role="tab" id="tabS" aria-selected="false" aria-controls="panelS">Transmisión</button>
+    <button role="tab" id="tabH" aria-selected="false" aria-controls="panelH">Anfitrión</button>
+  </nav>
+
+  <main>
+    <!-- PROGRAMA -->
+    <section id="panelP" role="tabpanel" aria-labelledby="tabP">
+      <div class="hero">
+        <div class="live" id="live"><span class="dot"></span><span id="liveLabel">En vivo</span></div>
+        <div aria-live="polite">
+          <p class="kicker" id="hKicker"></p>
+          <h1 class="title" id="hTitle"></h1>
+          <p class="sub" id="hSub"></p>
+        </div>
+        <div id="hBar" hidden>
+          <div class="bar"><i id="hFill"></i></div>
+          <div class="barinfo"><span id="hLeft"></span><span id="hRight"></span></div>
+        </div>
+      </div>
+
+      <div class="next" id="next" hidden>
+        <div><span class="l">Sigue</span><span class="n" id="nName"></span></div>
+        <div class="a" id="nTime"></div>
+      </div>
+
+      <h2 class="h2">Programa del festival</h2>
+      <p class="h2note">Jueves 12 de noviembre · Auditorio Álvaro del Portillo</p>
+      <ol class="prog" id="progF"></ol>
+
+      <h2 class="h2">Jornada de los coros</h2>
+      <p class="h2note">Para coros, directores y padrinos</p>
+      <ol class="prog" id="progJ"></ol>
+    </section>
+
+    <!-- TRANSMISIÓN -->
+    <section id="panelS" role="tabpanel" aria-labelledby="tabS" hidden>
+      <div class="stream">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M10 8.5v7l6-3.5-6-3.5z" fill="currentColor" stroke="none"/></svg>
+        <h2>Mira el festival en vivo</h2>
+        <p id="sText">Transmisión por Instagram, @experienciaunisabana. Comparte el enlace con quienes no pudieron venir.</p>
+        <div class="linkbox"><input id="sUrl" type="text" readonly aria-label="Enlace de la transmisión"></div>
+        <button class="btn" id="sCopy" type="button">Copiar enlace</button>
+        <a class="btn ghost" id="sOpen" target="_blank" rel="noopener">Abrir en Instagram</a>
+        <p class="msg" id="sMsg" role="status"></p>
+      </div>
+    </section>
+
+    <!-- ANFITRIÓN -->
+    <section id="panelH" role="tabpanel" aria-labelledby="tabH" hidden>
+      <div class="lock" id="lock">
+        <h2>Acceso para el anfitrión</h2>
+        <p>Ingresa la clave para ver el guion del festival.</p>
+        <input id="pw" type="password" placeholder="Clave" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Clave de acceso">
+        <button class="btn" id="unlock" type="button">Entrar</button>
+        <p class="err" id="pwErr" role="alert"></p>
+      </div>
+
+      <div id="hostBody" hidden>
+        <div class="hstatus"><span id="hsNow"></span><span id="hsLeft"></span></div>
+        <div class="focus" id="focus"></div>
+        <div class="tools">
+          <span class="lbl">Guion completo</span>
+          <button type="button" id="fMinus" aria-label="Reducir tamaño del texto">A−</button>
+          <button type="button" id="fPlus" aria-label="Aumentar tamaño del texto">A+</button>
+          <button type="button" id="relock">Bloquear</button>
+        </div>
+        <div id="script"></div>
+      </div>
+    </section>
+  </main>
+
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+/* ============================================================
+   DATOS DEL FESTIVAL  (editar solo aquí)
+   ============================================================ */
+const EVENT = {
+  name:      'Festival Coros a La Sabana',
+  org:       'Dirección de Bienestar y Experiencia del Estudiante',
+  dateLabel: '12 de noviembre de 2026',
+  tagline:   'Un encuentro que celebra la música coral'
+};
+const FESTIVAL_DATE = '2026-11-12';          // fecha en Colombia
+const PASS_HASH = 'ae01497c1f0c52bb174855f6c315346cbfc1994aa9aae6743a13a636b1f27f81'; // SHA-256 de la clave
+
+/* Coros en orden de presentación.
+   from = procedencia; dir = director(a); rep = repertorio; nota = apoyo para la maestra de ceremonias */
+const COROS = {
+  ical: { name:'Coro de Manos de la Fundación para el Niño Sordo ICAL', from:'Bogotá', dir:'Elsie M. Baquero Herrera',
+    rep:['Himno de la Fundación para el Niño Sordo ICAL','Popurrí de jingles que marcaron a Colombia'],
+    nota:'Sugerencia: invitar al público a aplaudir también en lengua de señas, agitando las manos en alto.' },
+  adlib: { name:'Estudio Coral Ad Libitum', from:'Tocancipá', dir:'Yezid Alexander Ramos Lara',
+    rep:['Call of Angels — Darius Lim','Fire Dance of Luna — Darius Lim','The Water Dance of Lluvia — Darius Lim','El Cumbanchero','Birimbi — tradicional'],
+    nota:'Pronunciación: Darius Lim se dice «Dárius Lim».' },
+  suasij: { name:'Agrupación Coral Suasí Juvenil', from:'Chía', dir:'Andrea Ocampo Trujillo',
+    rep:['Sing Gloria! — Becki Slagle Mayo','Viejo tiplecito, pasillo — José A. Morales; arr. Maggín González','Bésame mucho — Consuelito Velázquez; arr. José Galván','Son de la loma — Miguel Matamoros; arr. Jorge Alejandro Salazar'] },
+  guasca: { name:'Coro San Jacinto de la Basílica Menor de Guasca', from:'Guasca', dir:'Cheyson Iván Avellaneda Sánchez',
+    rep:['Ave María gratia plena — Dante Andreo','Dona nobis pacem — Mary Lynn Lightfoot','Agnus Dei, de la Misa de Gloria n.º 13 — Oreste Sindici','Nunca es suficiente — Natalia Lafourcade, arreglo coral','Ave María — David Hamilton'],
+    nota:'Pronunciación: Sindici se dice «Síndichi».' },
+  cajica: { name:'Coro Representativo del Instituto de Cultura y Turismo de Cajicá', from:'Cajicá', dir:'Breiner Valderrama',
+    rep:['Lunita clara — música: Jesús Alberto Rey; letra: Esther Schneider; arr. Eunice Prada','El sol y la luna — Leonor Buenaventura; arr. Alejandro Zuleta','Fantasmas — Jhon Jairo Torres de la Pava; arr. Enerith Núñez','El pescador — José Barros; arr. Jorge Alejandro Salazar','Prende la vela — letra y música: Lucho Bermúdez; arr. Lucía Arciniegas'] },
+  suasia: { name:'Coro de Adultos Representativo Suasí', from:'Chía', dir:'Héctor Fernando Rodríguez Sabogal',
+    rep:['Te quiero — poesía: Mario Benedetti; música: Alberto Favero; armonización: Liliana Cangiano','A tu lado — Javier Busto y Matías Antón Mena','Víveme — María Isabel Mejía; arr. Gabriel Andrés Rodríguez','Salmo 150 — Ernani Aguiar'],
+    nota:'Pronunciación: Busto se dice «Bústo».' },
+  upn: { name:'Coro Universidad Pedagógica Nacional', from:'Bogotá', dir:'Andrea Triviño Valbuena',
+    rep:['Kyrie — Martín Palmieri','Canción del boga ausente — letra: Candelario Obeso; música: José Antonio Rincón','A tu lado, habanera — Javier Busto'],
+    nota:'Pronunciación: Palmieri se dice «Palmiéri»; Busto, «Bústo».' },
+  unisab: { name:'Coro UniSabana', from:'Universidad de La Sabana', dir:'Juan Carlos Aleán Cano',
+    rep:['A bordo de tu voz — Luz Marina Posada; arr. Gabriel Andrés Rodríguez','Te iwi e — canción tradicional maorí («Escuchen al pueblo»)','Viejo tiplecito, pasillo — José Alejandro Morales; arr. Maggín González','Beat It — Michael Jackson; arr. Mark Brymer'],
+    nota:'Pronunciación: Te iwi e se dice «te í-wi e».' }
+};
+
+/* [inicio, fin, tipo, clave o título, lugar, público] — hora de Colombia, formato 24 h
+   tipos: act (actividad general) | open | intro (presentación y organización) | show | mass (masa coral) | close
+   público de las actividades generales: 'coros' (jornada de los coros) o 'fest' (programa del festival) */
+const RAW = [
+  ['08:00','10:00','act','Llegada de coros, recibimiento de padrinos y recorrido por el campus','Campus','coros'],
+  ['10:00','12:00','act','Taller «El coro que habita en mí»','Zona verde frente a Adportas y Auditorio Álvaro del Portillo','coros'],
+  ['12:00','12:30','act','Ensayo de la obra común','Auditorio Álvaro del Portillo','coros'],
+  ['12:30','13:30','act','Acomodación, almuerzo libre y calentamiento','Salones asignados','coros'],
+  ['13:30','14:30','act','Pruebas de sonido','Auditorio Álvaro del Portillo','coros'],
+  ['14:30','15:00','act','Ingreso del público','Auditorio Álvaro del Portillo','fest'],
+  ['15:00','15:05','open'],
+  /* cada coro: 15 min en escena, contados desde que la maestra de ceremonias lo presenta (1 min) */
+  ['15:05','15:06','intro','ical'],   ['15:06','15:20','show','ical'],
+  ['15:20','15:21','intro','adlib'],  ['15:21','15:35','show','adlib'],
+  ['15:35','15:36','intro','suasij'], ['15:36','15:50','show','suasij'],
+  ['15:50','15:51','intro','guasca'], ['15:51','16:05','show','guasca'],
+  ['16:05','16:06','intro','cajica'], ['16:06','16:20','show','cajica'],
+  ['16:20','16:21','intro','suasia'], ['16:21','16:35','show','suasia'],
+  ['16:35','16:36','intro','upn'],    ['16:36','16:50','show','upn'],
+  ['16:50','16:51','intro','unisab'], ['16:51','17:05','show','unisab'],
+  ['17:05','17:25','mass'],
+  ['17:25','17:30','close'],
+  ['17:30','18:00','act','Salida del público y de los coros, cierre del auditorio','Auditorio Álvaro del Portillo','fest']
+];
+
+/* Enlace de la transmisión en vivo. Vacío = pendiente (la pestaña lo indica). */
+const STREAM_URL = 'https://www.instagram.com/experienciaunisabana/';
+
+/* Descripción de ~1 min por coro, misma estructura para todos:
+   fund = fundación (vacío si no se tiene el dato); b = [Origen, Trayectoria, Hitos, Hoy].
+   Al final se agrega automáticamente el llamado al escenario. Lectura estimada a 140 palabras por minuto. */
+const BEAT_LABELS = ['Origen','Trayectoria','Hitos','Hoy','Al escenario'];
+const WPM = 140;
+const DESC = {
+  ical: { fund:'Hace más de diez años', b:[
+    'Hace más de diez años nació en la Fundación para el Niño Sordo ICAL el Coro de Manos, como expresión de amor, identidad y unión. En este coro las manos se convierten en voz y cada movimiento lleva una emoción.',
+    'Desde entonces, su creadora y directora, Elsie M. Baquero Herrera, fonoaudióloga e intérprete de Lengua de Señas Colombiana, ha acompañado a varias generaciones de estudiantes sordos en el descubrimiento de la música.',
+    'Ella es también coautora del himno de la Fundación, que escucharemos hoy.',
+    'Sus estudiantes nos recuerdan que la música va más allá de la voz y del oído: también vive en el ritmo que nace del corazón. Hoy nos invitan a mirar y escuchar con el corazón.'
+  ]},
+  adlib: { fund:'2020', b:[
+    'Fundado en 2020, el Estudio Coral Ad Libitum es una agrupación infantil de Tocancipá, Cundinamarca, con un repertorio que recorre la música sacra, universal, latinoamericana y colombiana.',
+    'Ha cantado junto a la Orquesta Sinfónica EAFIT y se ha presentado en el Teatro Mayor Julio Mario Santo Domingo, en el Festival de Música Sacra de Bogotá y en festivales de Chile y Brasil.',
+    'Sus integrantes hicieron parte del Coro Infantil Nacional en 2022, y en 2023 fue nombrado coro representativo de Cundinamarca.',
+    'Hoy es referente cultural de su municipio y regresa a este festival. Lo dirige Yezid Alexander Ramos Lara, corista desde los tres años, formado en canto lírico en el Conservatorio de la Universidad Nacional.'
+  ]},
+  suasij: { fund:'', b:[
+    'La Agrupación Coral Suasí Juvenil está conformada por jóvenes de la Escuela de Formación Artística y Cultural, EFAC, de Chía.',
+    'Sus integrantes han participado en el XII y el XIII Festival Artístico Internacional, donde se han formado en talleres con maestros como Daniel Andrade, de Brasil; Damien Lim, de Singapur, y Claudia Londoño, de Colombia.',
+    'Su directora, Andrea Ocampo Trujillo, es una de las pocas mujeres campanistas del país y ha llevado sus agrupaciones a Italia, República Checa, México, Alemania, Estados Unidos, Brasil, Singapur y Argentina.',
+    'Licenciada en Música de la Universidad Pedagógica Nacional, hoy dirige los procesos corales de la EFAC de Chía y de la Escuela de Música San Francisco de Asís de Tabio.'
+  ]},
+  guasca: { fund:'Noviembre de 2022', b:[
+    'Fundado en noviembre de 2022, el Coro San Jacinto reúne a niños y jóvenes de 6 a 18 años que enriquecen con música sacra la vida litúrgica de la Basílica Menor San Jacinto de Guasca.',
+    'Se ha presentado en Guasca, Cajicá, Chía, Zipaquirá, Tocancipá, Duitama, Bogotá y Puerto Colombia.',
+    'Ha participado en festivales como el Javeriano de Coros Infantiles y Juveniles Alejandro Zuleta.',
+    'Cuenta con el acompañamiento del presbítero Juan Miguel Sarmiento y lo dirige Cheyson Iván Avellaneda Sánchez, licenciado en Música de la Universidad Pedagógica Nacional y excorista del coro de la Ópera de Colombia. Su lema: una misma fe, muchas voces y un solo propósito.'
+  ]},
+  cajica: { fund:'', b:[
+    'El Coro Representativo del Instituto de Cultura y Turismo de Cajicá reúne a las mejores voces femeninas de los procesos juveniles y de adultos del Área Coral Vocal del municipio.',
+    'Su repertorio, dinámico y versátil, incluye obras en diversos idiomas y estilos.',
+    'Ha participado en el Festival Coral de Música Sacra de Cajicá, el Encuentro de Coros de Navidad y el Festival de las Artes, entre otros escenarios de Bogotá y Cundinamarca.',
+    'Lo dirige Breiner Valderrama, director del Coro Filarmónico Masculino de la Orquesta Filarmónica de Bogotá y fundador de la Escuela Coral de Bogotá, con Yesica Forero como directora asistente y Rubén Visbal al piano.'
+  ]},
+  suasia: { fund:'2015', b:[
+    'Fundado en 2015, el Coro de Adultos Representativo Suasí reúne a unos 30 integrantes de entre 18 y 58 años y hace parte de la Red Coral de Chía.',
+    'Ha tenido intercambios culturales con agrupaciones de Puerto Rico, México, Cuba, Brasil, Hungría y Venezuela, y ha cantado en los Encuentros CORPACOROS de Buga, en la Catedral de Sal de Zipaquirá y en el Teatro Cafam.',
+    'En 2026 participó en el XIII Festival Artístico Internacional «Sueños en la Ciudad de la Luna».',
+    'Lo dirige Héctor Fernando Rodríguez Sabogal, músico de la Universidad Central, integrante del Coro de la Ópera de Colombia durante más de 12 años y líder de giras por República Checa, México, Puerto Rico y Cuba.'
+  ]},
+  upn: { fund:'Años sesenta', b:[
+    'El Coro de la Universidad Pedagógica Nacional fue fundado en los años sesenta por el maestro Amadeo Rojas Martínez.',
+    'Ha cantado Carmina Burana en el Teatro Mayor Julio Mario Santo Domingo junto al Coro y la Banda Sinfónica Nacional, y se ha presentado en el Festival Polifónico Voces Mestizas, en Puerto Colombia y en Sogamoso, además de montajes como Kraken Sinfónico.',
+    'En 2010 representó a Colombia en Baires Canta, en Argentina.',
+    'Hoy lo conforman 70 estudiantes de la Licenciatura en Música. Desde 2024 lo dirige Andrea Triviño Valbuena, docente de la Facultad de Bellas Artes y directora invitada en Costa Rica y en Madrid.'
+  ]},
+  unisab: { fund:'', b:[
+    'El Coro UniSabana, coro anfitrión, reúne a estudiantes de distintos programas académicos de la Universidad de La Sabana que comparten el gusto por la música vocal.',
+    'Su repertorio es amplio: música universal y sacra, spirituals, folclor y arreglos de pop y rock.',
+    'Ha participado en encuentros, festivales y concursos corales nacionales e internacionales, dentro y fuera del campus.',
+    'Lo dirige Juan Carlos Aleán Cano, licenciado en Música de la Universidad Pedagógica Nacional, barítono del cuarteto vocal The Four Singers y excodirector del Coro Filarmónico Prejuvenil de la Orquesta Filarmónica de Bogotá.'
+  ]}
+};
+
+const OPEN_TEXT = `Buenas tardes a todos y bienvenidos a la Universidad de La Sabana. Es una alegría recibirlos en una nueva edición del Festival Coros a La Sabana, un encuentro que celebra la música coral y a quienes, desde sus municipios, colegios, parroquias y universidades, hacen del canto colectivo un camino de formación y comunidad.
+
+Hoy nos acompañan ocho agrupaciones de Tocancipá, Guasca, Cajicá, Chía y Bogotá, con coristas desde la infancia hasta la edad adulta. Escucharemos música sacra, repertorio colombiano y latinoamericano, obras universales y hasta un coro que canta con las manos.
+
+Les pedimos silenciar sus celulares y acompañar a cada coro con su aplauso. Damos inicio al festival.`;
+
+const MASS_TITLE = 'Masa coral: «Colombia es amor»';
+const MASS_TEXT = `A continuación, invitamos a todos los coros participantes a subir al escenario para unir sus voces en la interpretación de la obra «Colombia es amor».
+
+Esta canción nos invita a reflexionar sobre el valor de la unión, la solidaridad y el amor como fuerzas capaces de transformar realidades, construir comunidad y hacer posibles grandes cosas cuando trabajamos juntos.
+
+Este año, nuestro país vivió momentos difíciles a raíz del terremoto, pero también fue testigo de algo extraordinario: la solidaridad de miles de colombianos que, desde distintos lugares y con diferentes formas de ayuda, se unieron para acompañar, reconstruir y brindar esperanza. Fueron muchas las manos que ofrecieron apoyo, no solo material, sino también emocional, demostrando que la empatía y el sentido de comunidad pueden convertirse en una fuerza inmensa para salir adelante.
+
+Y es precisamente ese el mensaje que queremos compartir hoy: la belleza de Colombia no está únicamente en sus paisajes, su diversidad y sus riquezas naturales; está, sobre todo, en su gente, en su capacidad de tender la mano, de unirse ante las dificultades y de construir juntos un país mejor. Eso es verdadero trabajo bien hecho y florecimiento humano.
+
+Que esta interpretación, en la que se unen todas las voces de nuestro festival, sea también un símbolo de ese amor y esa solidaridad que nos identifican y nos recuerdan que, cuando estamos unidos, somos capaces de lograr grandes cosas.
+
+¡Recibamos esta interpretación conjunta de «Colombia es amor»!`;
+
+const CLOSE_TEXT = `Con esta presentación llegamos al final del Festival Coros a La Sabana. Gracias a los ocho coros, a sus directoras y directores, y a cada corista que hoy compartió su voz y sus manos con nosotros. Gracias también a los padrinos, al equipo organizador y a ustedes, nuestro público.
+
+Pedimos un último y gran aplauso para todas las agrupaciones. La Universidad de La Sabana los espera en la próxima edición. ¡Muchas gracias!`;
+
+/* ============================================================
+   LÓGICA
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2,'0');
+const NB = ' ';
+const toSec = s => { const [h,m] = s.split(':').map(Number); return h*3600 + m*60; };
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function f12(sec, withSec){
+  let h = Math.floor(sec/3600), m = Math.floor(sec%3600/60), s = sec%60;
+  const ap = h >= 12 ? 'p.'+NB+'m.' : 'a.'+NB+'m.';
+  h = h%12 || 12;
+  return h + ':' + pad(m) + (withSec ? ':' + pad(s) : '') + NB + ap;
+}
+const f12n = sec => { const h = Math.floor(sec/3600)%12 || 12; return h + ':' + pad(Math.floor(sec%3600/60)); };
+const apOf = sec => sec >= 12*3600 ? 'p.'+NB+'m.' : 'a.'+NB+'m.';
+const range = (a,b) => f12n(a) + ' – ' + f12n(b);
+function mmss(s){
+  s = Math.max(0, Math.floor(s));
+  const h = Math.floor(s/3600), m = Math.floor(s%3600/60), ss = s%60;
+  return h ? h + ':' + pad(m) + ':' + pad(ss) : pad(m) + ':' + pad(ss);
+}
+
+const SLOTS = RAW.map(([a,b,type,key,place,aud], i) => (type === 'act'
+  ? { i, s:toSec(a), e:toSec(b), type, title:key, place, aud }
+  : { i, s:toSec(a), e:toSec(b), type, key }));
+const OPEN_IDX = SLOTS.findIndex(x => x.type === 'open');
+const CLOSE_IDX = SLOTS.findIndex(x => x.type === 'close');
+
+const GROUPS = [];
+SLOTS.forEach(sl => {
+  if (sl.type === 'intro') GROUPS.push({ type:'coro', key:sl.key, first:sl.i, last:sl.i, intro:sl, s:sl.s, e:sl.e });
+  else if (sl.type === 'show'){ const g = GROUPS[GROUPS.length-1]; g.show = sl; g.last = sl.i; g.e = sl.e; }
+  else GROUPS.push({ type:sl.type, sl, first:sl.i, last:sl.i, s:sl.s, e:sl.e });
+});
+
+function slotName(sl){
+  if (sl.type === 'act')   return sl.title;
+  if (sl.type === 'open')  return 'Apertura del festival';
+  if (sl.type === 'mass')  return MASS_TITLE;
+  if (sl.type === 'close') return 'Cierre y despedida';
+  return COROS[sl.key].name;
+}
+
+/* --- Hora de Colombia (America/Bogota, UTC-5) --- */
+const FMT = new Intl.DateTimeFormat('en-CA', {
+  timeZone:'America/Bogota', hourCycle:'h23',
+  year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit'
+});
+function realNow(){
+  const p = {};
+  FMT.formatToParts(new Date()).forEach(x => p[x.type] = x.value);
+  return { date: p.year + '-' + p.month + '-' + p.day, sec: (+p.hour)*3600 + (+p.minute)*60 + (+p.second) };
+}
+/* Ensayo: añadir ?hora=16:20 al enlace para simular una hora del día del festival */
+let SIM_OFFSET = null;
+try {
+  const q = new URLSearchParams(location.search).get('hora');
+  if (q && /^\d{1,2}:\d{2}(:\d{2})?$/.test(q)) {
+    const parts = q.split(':').map(Number);
+    SIM_OFFSET = (parts[0]*3600 + parts[1]*60 + (parts[2]||0)) - realNow().sec;
+  }
+} catch(e){}
+function nowLocal(){
+  const r = realNow();
+  if (SIM_OFFSET === null) return r;
+  return { date: FESTIVAL_DATE, sec: ((r.sec + SIM_OFFSET) % 86400 + 86400) % 86400 };
+}
+
+function computeState(n){
+  const N = SLOTS.length;
+  if (n.date < FESTIVAL_DATE) return { phase:'before', early:true, idx:-1, key:'b-early' };
+  if (n.date > FESTIVAL_DATE || n.sec >= SLOTS[N-1].e) return { phase:'after', idx:N, key:'after' };
+  if (n.sec < SLOTS[0].s) return { phase:'before', early:false, idx:-1, key:'b' };
+  let idx = SLOTS.findIndex(x => n.sec >= x.s && n.sec < x.e);
+  if (idx < 0) { idx = 0; SLOTS.forEach((x,i) => { if (x.s <= n.sec) idx = i; }); }
+  return { phase:'live', idx, key:'l' + idx };
+}
+
+function nextInfo(st){
+  if (st.phase === 'after') return null;
+  const from = st.phase === 'before' ? 0 : st.idx + 1;
+  for (let j = from; j < SLOTS.length; j++){
+    const x = SLOTS[j];
+    if (x.type !== 'intro') return { name:slotName(x), at:x.s };
+  }
+  return null;
+}
+
+/* --- Render: programa --- */
+let ST = null;
+
+function renderHero(st){
+  const live = $('live'), label = $('liveLabel');
+  let kicker = '', title = '', sub = '', bar = false;
+  live.classList.remove('on');
+
+  if (st.phase === 'before'){
+    label.textContent = 'Próximamente';
+    if (st.early){
+      kicker = 'El festival es el ' + EVENT.dateLabel;
+      title = EVENT.name;
+      sub = EVENT.tagline + '. Presentaciones desde las ' + f12(SLOTS[OPEN_IDX].s);
+    } else {
+      kicker = 'La jornada comienza a las ' + f12(SLOTS[0].s);
+      title = '';
+      sub = 'Presentaciones desde las ' + f12(SLOTS[OPEN_IDX].s);
+    }
+  } else if (st.phase === 'after'){
+    label.textContent = 'Finalizado';
+    kicker = 'El festival terminó';
+    title = 'Gracias por acompañarnos';
+    sub = EVENT.tagline;
+  } else {
+    const cur = SLOTS[st.idx]; bar = true;
+    if (cur.type === 'act'){
+      label.textContent = 'Hoy';
+      kicker = cur.i < OPEN_IDX ? 'Ahora · Presentaciones desde las ' + f12(SLOTS[OPEN_IDX].s) : 'Ahora';
+      title = cur.title; sub = cur.place;
+    } else {
+      live.classList.add('on'); label.textContent = 'En vivo';
+      if (cur.type === 'open'){ kicker = 'Apertura'; title = 'Apertura del festival'; sub = 'Bienvenidos al ' + EVENT.name; }
+      else if (cur.type === 'intro'){ kicker = 'Sube al escenario'; title = COROS[cur.key].name; sub = COROS[cur.key].from + ' · Dirige ' + COROS[cur.key].dir; }
+      else if (cur.type === 'show'){ const c = COROS[cur.key]; kicker = 'En escena'; title = c.name; sub = c.from + ' · Dirige ' + c.dir; }
+      else if (cur.type === 'mass'){ kicker = 'Masa coral'; title = '«Colombia es amor»'; sub = 'Todos los coros participantes unen sus voces.'; }
+      else { kicker = 'Cierre y despedida'; title = 'Gracias por acompañarnos'; sub = EVENT.tagline; }
+    }
+  }
+  $('hKicker').textContent = kicker;
+  if (title) $('hTitle').textContent = title;
+  $('hSub').textContent = sub; $('hSub').hidden = !sub;
+  $('hBar').hidden = !bar;
+}
+
+function renderNext(st){
+  const nx = nextInfo(st);
+  $('next').hidden = !nx;
+  if (nx){ $('nName').textContent = nx.name; $('nTime').textContent = f12(nx.at); }
+}
+
+function rowHTML(g, st){
+  const state = st.idx > g.last ? 'past' : (st.idx >= g.first ? 'now' : 'future');
+  let title, meta = '', tag = '';
+  if (g.type === 'coro'){
+    const c = COROS[g.key];
+    title = c.name;
+    meta = esc(c.from + ' · Dirige ' + c.dir);
+  } else {
+    title = slotName(g.sl);
+    if (g.type === 'act') meta = esc(g.sl.place);
+    if (g.type === 'mass') meta = 'Todos los coros participantes';
+  }
+  if (state === 'now'){
+    const t = SLOTS[st.idx].type;
+    tag = t === 'show' ? 'En escena' : t === 'intro' ? 'Presentación en curso' : 'En curso';
+  }
+  const time = range(g.s, g.e);
+  return '<li class="row ' + state + '"' + (state === 'now' ? ' aria-current="true"' : '') + '>' +
+    '<div class="tm">' + time + '<small>' + apOf(g.e) + '</small></div>' +
+    '<div><h3>' + esc(title) + '</h3>' + (meta ? '<p>' + meta + '</p>' : '') +
+    (tag ? '<span class="tag">' + tag + '</span>' : '') + '</div></li>';
+}
+
+function renderProgram(st){
+  $('progF').innerHTML = GROUPS.filter(g => !(g.type === 'act' && g.sl.aud === 'coros')).map(g => rowHTML(g, st)).join('');
+  $('progJ').innerHTML = GROUPS.filter(g => g.type === 'act' && g.sl.aud === 'coros').map(g => rowHTML(g, st)).join('');
+}
+
+/* --- Render: anfitrión --- */
+const paras = txt => txt.trim().split(/\n\s*\n/).map(p => '<p>' + esc(p.trim()) + '</p>').join('');
+function scriptFor(sl){
+  if (sl.type === 'open')  return { html: paras(OPEN_TEXT) };
+  if (sl.type === 'mass')  return { html: paras(MASS_TEXT) };
+  if (sl.type === 'close') return { html: paras(CLOSE_TEXT) };
+  if (sl.type === 'intro'){
+    const d = DESC[sl.key], c = COROS[sl.key];
+    const texts = d.b.concat(['Con ustedes, ' + c.name + '. ¡Un fuerte aplauso!']);
+    const words = texts.join(' ').split(/\s+/).length;
+    const secs = Math.round(words / WPM * 60);
+    return {
+      chips: (d.fund ? '<span class="chip">Fundación: ' + esc(d.fund) + '</span>' : '') +
+        '<span class="chip">' + esc(c.from) + '</span>' +
+        '<span class="chip">Obras: ' + c.rep.length + '</span>' +
+        '<span class="chip">Lectura estimada: ' + secs + ' s</span>',
+      html: texts.map((t,i) => '<div class="beat"><span class="bl">' + BEAT_LABELS[i] + '</span><p>' + esc(t) + '</p></div>').join('') +
+        (c.nota ? '<div class="note">' + esc(c.nota) + '</div>' : '')
+    };
+  }
+  if (sl.type === 'show'){
+    const c = COROS[sl.key];
+    return { sub:'Repertorio · ' + c.rep.length + (c.rep.length === 1 ? ' obra' : ' obras'),
+      html: '<ol class="rep">' + c.rep.map(r => '<li>' + esc(r) + '</li>').join('') + '</ol>' };
+  }
+  return null;
+}
+function slotTitle(sl){
+  if (sl.type === 'intro') return 'Presenta a ' + COROS[sl.key].name;
+  if (sl.type === 'show')  return 'En escena: ' + COROS[sl.key].name;
+  return slotName(sl);
+}
+
+function renderHost(st){
+  /* tarjeta de enfoque */
+  let fi = -1, fk = '';
+  if (st.phase === 'before'){ fi = OPEN_IDX; fk = 'Primero en tu guion'; }
+  else if (st.phase === 'live'){
+    const cur = SLOTS[st.idx];
+    if (cur.type === 'act'){ if (cur.i < OPEN_IDX){ fi = OPEN_IDX; fk = 'Primero en tu guion'; } }
+    else if (cur.type === 'show'){ fi = Math.min(st.idx + 1, CLOSE_IDX); fk = 'Prepárate: sigue en tu guion'; }
+    else { fi = st.idx; fk = 'Lee ahora'; }
+  }
+  const F = $('focus');
+  if (fi < 0){
+    F.innerHTML = '<p class="fk">Festival finalizado</p><h2>Gracias por conducir el festival</h2>';
+  } else {
+    const sl = SLOTS[fi], sc = scriptFor(sl);
+    F.innerHTML = '<p class="fk">' + fk + '</p><h2>' + esc(slotTitle(sl)) + '</h2>' +
+      '<p class="ft">' + range(sl.s, sl.e) + NB + apOf(sl.e) + '</p>' +
+      (sc && sc.chips ? '<div class="chips">' + sc.chips + '</div>' : '') +
+      '<div class="script">' + (sc ? sc.html : '') + '</div>';
+  }
+
+  /* guion completo: de la apertura al cierre */
+  $('script').innerHTML = SLOTS.slice(OPEN_IDX, CLOSE_IDX + 1).map(sl => {
+    const cur = st.phase === 'live' && st.idx === sl.i;
+    const sc = scriptFor(sl);
+    return '<details class="hs' + (cur ? ' cur' : '') + '"><summary><span class="ht">' + range(sl.s, sl.e) + '</span>' +
+      '<span class="hn">' + esc(slotTitle(sl)) + (sc.sub ? '<span class="hm">' + esc(sc.sub) + '</span>' : '') + '</span></summary>' +
+      '<div class="hb">' + (sc.chips ? '<div class="chips">' + sc.chips + '</div><div style="height:12px"></div>' : '') + sc.html + '</div></details>';
+  }).join('');
+}
+
+/* --- Actualización por segundo --- */
+function updateLive(st, n){
+  if (st.phase === 'before'){
+    if (!st.early) $('hTitle').textContent = mmss(SLOTS[0].s - n.sec);
+    $('hsNow').textContent = 'El festival aún no comienza';
+    $('hsLeft').textContent = st.early ? '' : 'Apertura en ' + mmss(SLOTS[OPEN_IDX].s - n.sec);
+    return;
+  }
+  if (st.phase === 'after'){ $('hsNow').textContent = 'Festival finalizado'; $('hsLeft').textContent = ''; return; }
+  const cur = SLOTS[st.idx], dur = cur.e - cur.s, rem = cur.e - n.sec;
+  $('hFill').style.width = Math.min(100, Math.max(0, (n.sec - cur.s) / dur * 100)) + '%';
+  $('hLeft').textContent = 'Quedan ' + mmss(rem);
+  $('hRight').textContent = 'Termina ' + f12(cur.e);
+  if (cur.type === 'act' && cur.i < OPEN_IDX){
+    $('hsNow').textContent = 'Ahora: ' + cur.title;
+    $('hsLeft').textContent = 'Apertura en ' + mmss(SLOTS[OPEN_IDX].s - n.sec);
+    return;
+  }
+  $('hsNow').textContent = 'Ahora: ' + (cur.type === 'show' ? COROS[cur.key].name : cur.type === 'intro' ? 'Presentación de ' + COROS[cur.key].name :
+    cur.type === 'open' ? 'Apertura' : cur.type === 'mass' ? 'Masa coral' : cur.type === 'close' ? 'Cierre' : cur.title);
+  $('hsLeft').textContent = 'Quedan ' + mmss(rem);
+}
+
+function tick(){
+  const n = nowLocal();
+  $('clock').textContent = f12(n.sec, true);
+  const st = computeState(n);
+  if (!ST || st.key !== ST.key){
+    ST = st;
+    renderHero(st); renderNext(st); renderProgram(st); renderHost(st);
+  }
+  updateLive(st, n);
+}
+
+/* --- Encabezado y pie --- */
+$('evName').textContent = EVENT.name;
+$('evOrg').textContent = EVENT.org;
+$('foot').textContent = EVENT.name + ' · ' + EVENT.org;
+
+/* --- Pestañas --- */
+const TABS = { P:'panelP', S:'panelS', H:'panelH' };
+function showTab(k){
+  Object.keys(TABS).forEach(t => {
+    $(TABS[t]).hidden = t !== k;
+    $('tab' + t).setAttribute('aria-selected', t === k);
+  });
+}
+$('tabP').onclick = () => showTab('P');
+$('tabS').onclick = () => showTab('S');
+$('tabH').onclick = () => showTab('H');
+
+/* --- Transmisión en vivo --- */
+if (STREAM_URL){
+  $('sUrl').value = STREAM_URL;
+  $('sOpen').href = STREAM_URL;
+} else {
+  $('sText').textContent = 'El enlace de la transmisión se publicará aquí antes del festival.';
+  $('sUrl').value = 'Enlace pendiente';
+  $('sCopy').hidden = true;
+  $('sOpen').hidden = true;
+}
+function copied(){ $('sMsg').textContent = 'Enlace copiado'; setTimeout(() => { $('sMsg').textContent = ''; }, 2500); }
+async function copyLink(){
+  try {
+    if (navigator.clipboard && window.isSecureContext){ await navigator.clipboard.writeText(STREAM_URL); copied(); return; }
+    throw new Error('sin clipboard');
+  } catch(e){
+    try {
+      const i = $('sUrl'); i.focus(); i.select(); i.setSelectionRange(0, STREAM_URL.length);
+      if (document.execCommand('copy')){ copied(); return; }
+    } catch(_){}
+    $('sMsg').textContent = 'No se pudo copiar solo. Mantén presionado el enlace para copiarlo.';
+  }
+}
+$('sCopy').onclick = copyLink;
+$('sUrl').addEventListener('focus', e => e.target.select());
+
+/* --- Acceso anfitrión --- */
+function setUnlocked(v){ $('lock').hidden = v; $('hostBody').hidden = !v; }
+async function sha256(t){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+async function tryUnlock(){
+  const v = $('pw').value.trim();
+  if (!v){ $('pwErr').textContent = 'Escribe la clave.'; return; }
+  try {
+    if (!(window.crypto && crypto.subtle)) throw new Error('nosubtle');
+    if (await sha256(v) === PASS_HASH){
+      $('pw').value = ''; $('pwErr').textContent = '';
+      try { sessionStorage.setItem('hostOK', PASS_HASH.slice(0,12)); } catch(e){}
+      setUnlocked(true);
+    } else { $('pwErr').textContent = 'Clave incorrecta. Revisa mayúsculas y números.'; }
+  } catch(e){
+    $('pwErr').textContent = 'No se pudo validar la clave. Abre la página desde el enlace https.';
+  }
+}
+$('unlock').onclick = tryUnlock;
+$('pw').addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
+$('relock').onclick = () => { try { sessionStorage.removeItem('hostOK'); } catch(e){} setUnlocked(false); };
+try { if (sessionStorage.getItem('hostOK') === PASS_HASH.slice(0,12)) setUnlocked(true); } catch(e){}
+
+/* --- Tamaño de texto del guion --- */
+let hs = 1.25;
+try { const v = parseFloat(localStorage.getItem('hostFont')); if (v >= 1 && v <= 2.25) hs = v; } catch(e){}
+function applyFont(){
+  $('hostBody').style.setProperty('--hs', hs + 'rem');
+  try { localStorage.setItem('hostFont', hs); } catch(e){}
+}
+$('fPlus').onclick  = () => { hs = Math.min(2.25, hs + .125); applyFont(); };
+$('fMinus').onclick = () => { hs = Math.max(1, hs - .125); applyFont(); };
+applyFont();
+
+if (SIM_OFFSET !== null) $('sim').hidden = false;
+tick();
+setInterval(tick, 1000);
+</script>
+</body>
+</html>
